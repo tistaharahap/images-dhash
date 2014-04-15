@@ -68,6 +68,8 @@ file:reco_image
 file:reco_image
 ```
 
++ Response (application/json)
+
 ```
 {
   "status": 200,

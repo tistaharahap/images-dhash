@@ -25,7 +25,7 @@ class HashModel(CoreModel):
 
         return q.as_dict()
 
-    def compare_hash(self, hash):
+    def compare_hash(self, hash, hamming_distance=30):
         sql = '''
             SELECT
                 image_hash,
@@ -37,9 +37,9 @@ class HashModel(CoreModel):
             FROM
                 %s
             HAVING
-                hamming_distance < 4
+                hamming_distance < %s
             ORDER BY
-                hamming_distance ASC''' % (hash, ImageHash.__tablename__)
+                hamming_distance ASC''' % (hash, ImageHash.__tablename__, hamming_distance)
 
         res = self.db.engine.execute(sql)
 

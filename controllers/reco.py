@@ -8,6 +8,8 @@ from dhash import Dhash
 from errors import ItemExistsError
 from settings import get_flask_settings
 import os
+import time
+import hashlib
 
 
 class Reco(restful.Resource):
@@ -23,7 +25,7 @@ class Reco(restful.Resource):
         if not f:
             return Responder.bad_request(msg='Reco Image is required')
 
-        filename = secure_filename(f.filename)
+        filename = secure_filename('%s-%s' % (Reco.md5(s=str(Reco.get_unix_time())), f.filename))
         fullpath = os.path.join(self.settings.upload_path, filename)
 
         f.save(fullpath)
@@ -43,6 +45,16 @@ class Reco(restful.Resource):
                                          payload={
                                              'dhash': dhash
                                          })
+
+    @classmethod
+    def md5(cls, s):
+        m = hashlib.md5()
+        m.update(s)
+        return m.hexdigest()
+
+    @classmethod
+    def get_unix_time(cls):
+        return int(time.time())
 
 
 class RecoCompare(restful.Resource):

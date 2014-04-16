@@ -47,7 +47,8 @@ class HashModel(CoreModel):
             return {
                 'image_hash': item[0],
                 'image_filename': item[1],
-                'hamming_distance': item[3]
+                'hamming_distance': item[3],
+                'image_link': 'http://localhost:5000/static/recos/%s' % item[1]
             }
 
         return [_process_item(item) for item in res]

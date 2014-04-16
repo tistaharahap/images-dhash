@@ -4,7 +4,7 @@ from PIL import Image
 class Dhash(object):
 
     @classmethod
-    def get_dhash(self, image, hash_size=8):
+    def get_dhash(cls, image, hash_size=8):
         image = image.convert('L').resize(
             (hash_size + 1, hash_size),
             Image.ANTIALIAS,
@@ -50,7 +50,7 @@ class Dhash(object):
         }
 
     @classmethod
-    def hamming_distance(self, s1, s2):
+    def hamming_distance(cls, s1, s2):
         if len(s1) != len(s2):
             raise ValueError("Undefined for sequences of unequal length")
 

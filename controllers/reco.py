@@ -1,6 +1,7 @@
 from flask import request
 from flask.ext import restful
 from werkzeug.utils import secure_filename
+from models import HashModel
 from utils import Responder
 from PIL import Image
 from dhash import Dhash
@@ -8,6 +9,8 @@ import os
 
 
 class Reco(restful.Resource):
+
+    model = HashModel()
 
     def get(self):
         return Responder.forbidden()
@@ -26,6 +29,12 @@ class Reco(restful.Resource):
         dhash = Dhash.get_dhash(img,
                                 hash_size=8)
 
+        try:
+            self.model.create_hash(filename=filename,
+                                   hash=dhash)
+        except Exception:
+            return Responder.forbidden(msg='Image already exists')
+
         return Responder.create_response(code=200,
                                          msg='ok',
                                          payload={
@@ -34,6 +43,22 @@ class Reco(restful.Resource):
 
 
 class RecoCompare(restful.Resource):
+
+    model = HashModel()
+
+    def get(self):
+        hash = request.args.get('hash')
+        if not hash:
+            return Responder.bad_request(msg='Hash is needed as query string')
+
+        images = self.model.compare_hash(hash=hash)
+        if not images:
+            return Responder.not_found(msg='No similarities found')
+
+        return Responder.create_response(code=200,
+                                         msg='ok',
+                                         payload=images)
+
 
     def post(self):
         f1 = request.files.get('reco_image1')

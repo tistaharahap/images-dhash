@@ -5,12 +5,15 @@ from models import HashModel
 from utils import Responder
 from PIL import Image
 from dhash import Dhash
+from errors import ItemExistsError
+from settings import get_flask_settings
 import os
 
 
 class Reco(restful.Resource):
 
     model = HashModel()
+    settings = get_flask_settings('dev')
 
     def get(self):
         return Responder.forbidden()
@@ -21,7 +24,7 @@ class Reco(restful.Resource):
             return Responder.bad_request(msg='Reco Image is required')
 
         filename = secure_filename(f.filename)
-        fullpath = os.path.join('/tmp', filename)
+        fullpath = os.path.join(self.settings.upload_path, filename)
 
         f.save(fullpath)
 
@@ -32,7 +35,7 @@ class Reco(restful.Resource):
         try:
             self.model.create_hash(filename=filename,
                                    hash=dhash)
-        except Exception:
+        except ItemExistsError:
             return Responder.forbidden(msg='Image already exists')
 
         return Responder.create_response(code=200,

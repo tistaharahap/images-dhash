@@ -8,6 +8,8 @@ class FlaskDevSettings(object):
 
         self.allowed_file_exts = set(['png', 'jpg', 'jpeg', 'gif'])
 
+        self.upload_path = './static/recos'
+
 
 class FlaskStageSettings(FlaskDevSettings):
 

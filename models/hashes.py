@@ -1,6 +1,7 @@
 from models import ImageHash
 from models import CoreModel
 from datetime import datetime
+from errors import ItemExistsError, ImageRecoError
 
 
 class HashModel(CoreModel):
@@ -9,7 +10,7 @@ class HashModel(CoreModel):
         q = self.session.query(ImageHash).filter_by(image_hash=hash).first()
 
         if q:
-            raise Exception('Hash already exists')
+            raise ItemExistsError('Hash already exists')
 
         imghash = ImageHash(image_hash=hash,
                             image_filename=filename,
@@ -20,7 +21,7 @@ class HashModel(CoreModel):
 
         q = self.session.query(ImageHash).filter_by(image_hash=hash).first()
         if not q:
-            raise Exception('Server error, failed to insert new image hash')
+            raise ImageRecoError('Server error, failed to insert new image hash')
 
         return q.as_dict()
 

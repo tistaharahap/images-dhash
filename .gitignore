@@ -1,3 +1,7 @@
 *.pyc
 .DS_Store
 .idea
+static/recos/*.jpg
+static/recos/*.jpeg
+static/recos/*.png
+static/recos/*.gif

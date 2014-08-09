@@ -3,6 +3,8 @@
 This is a simple demo demonstrating the ease and accuracy of the Dhash algorithm to compare 2 different images and
 predict similarities. Sourced form [here](http://www.hackerfactor.com/blog/index.php?/archives/529-Kind-of-Like-That.html).
 
+Massively inspired from Iconfinder [here](http://blog.iconfinder.com/detecting-duplicate-images-using-python/).
+
 ## Short Explanation
 
 Dhash will likely endure image manipulations such as scaling, aspect ratio changes, brightness, contrast and even
